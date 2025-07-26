@@ -2,7 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../logics/todo_logic.dart';
 
-class ToDoList extends StatelessWidget {
+class ToDoList extends StatefulWidget {
+  @override
+  State<ToDoList> createState() => _ToDoListState();
+}
+
+class _ToDoListState extends State<ToDoList> {
+  bool? isChecked = false;
+
   @override
   Widget build(BuildContext context) {
     final todoLogic = Provider.of<TodoLogic>(context);
@@ -21,12 +28,7 @@ class ToDoList extends StatelessWidget {
               ),
               child: Padding(
                 padding: EdgeInsets.all(16),
-                child: Text(
-                  todoLogic.toDoList[index],
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
-                  ),
+                child: CheckboxListItem(title: todoLogic.toDoList[index])
                 ),
             ),
           );
@@ -68,6 +70,35 @@ class ToDoList extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class CheckboxListItem extends StatefulWidget {
+    final String title;
+    const CheckboxListItem({required this.title, super.key});
+
+    @override
+  State<StatefulWidget> createState() => _CheckboxListItemState();
+  }
+  class _CheckboxListItemState  extends State<CheckboxListItem>{
+    bool isChecked = false;
+
+
+    @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Checkbox(
+          value: isChecked,
+          onChanged: (bool? value) {
+            setState(() {
+              isChecked = value!;
+            });
+          },
+        ),
+        Text(widget.title)
+      ],
     );
   }
 }
